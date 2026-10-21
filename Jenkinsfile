@@ -8,16 +8,16 @@ pipeline {
             }
         }
 
-        stage('Run Unit tests') {
-            agent {
-                docker {
-                    image 'python:3.12-slim'
-                }
-            }
-            
+        stage('Install pytest') {
             steps {
-                sh 'python -m pip install pytest'
-                sh 'python3 -m pytest -v'
+                sh 'python3 -m venv .venv'
+                sh '.venv/bin/pip install pytest'
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh '.venv/bin/python -m pytest -v'
             }
         }
     }
